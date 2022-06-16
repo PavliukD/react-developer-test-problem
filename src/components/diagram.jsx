@@ -1,45 +1,64 @@
-import { Chart } from "./chart";
-import { CanvasHTMLAttributes } from "react";
+import { Chart, Bar, Line } from "react-chartjs-2";
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+  } from 'chart.js'
 
-export const Diagram = () => {
-    const Ctx = <canvas id="myChart" width="400" height="400"></canvas>
 
-    const myChart = Chart(Ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
+
+
+
+export const Diagram = (type = 'bar', labels, data) => {
+    console.log(labels)
+    console.log(data)
+
+    ChartJS.register(
+        CategoryScale,
+        LinearScale,
+        PointElement,
+        LineElement,
+        Title,
+        Tooltip,
+        Legend
+      );
+
+    const options = {
+        responsive: true,
+    
+    }
+    
+    const d = {
+        labels,
+        datasets: [
+            {
+                label: "Dataset",
+                data,
+                borderColor: 'black',
+                backgroundColor: 'blue'
             }
-        }
-    });
+        ]
+    }
 
-    return (
-        <Ctx/>
+    if (!labels || !data){
+        return(
+            <></>
+        )
+    }
+
+    return(
+        <>
+        {type === "bar" ? 
+        <Bar options = {options} data = {d}></Bar> :
+        <Line options = {options} data = {d}></Line>
+        }
+        </>
     )
+
 }
+

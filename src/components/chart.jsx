@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
-import { Diagram } from './diagram'
+import {Diagram} from './diagram'
+
 
 const Container = styled.div`
     padding: 10 20;
@@ -33,14 +34,13 @@ const StyledLabel = styled.label`
     font-size: 12px;
 `
 
-const Input = ({name, children, inputFunction, value}) => {
+const Input = ({ name, children, inputFunction, value }) => {
 
     const handleChange = (e) => {
-        console.log(e.target.value)
         inputFunction(e.target.value)
     }
 
-    return(
+    return (
         <InputWrap>
             <StyledLabel htmlFor={name}>{children}</StyledLabel>
             <StyledInput name={name} type='text' onChange={handleChange} value={value}></StyledInput>
@@ -53,29 +53,32 @@ export const Chart = () => {
 
     const [xAxis, setXAxis] = useState('')
     const [yAxis, setYAxis] = useState('')
+    const [labels, setLabels] = useState([])
+    const [data, setData] = useState([])
 
     useEffect(() => {
-        const xAxisValues = xAxis.split(',')
-        const yAxisValues = yAxis.split(',')
-    })
+        setLabels(xAxis.split(',').map(value => value.trim()))
+        setData(yAxis.split(',').map(value => value.trim()))
+        console.log(labels)
+        console.log(data)
+    }, [xAxis, yAxis])
 
-    return(
+    return (
         <Container>
             <ChartWrap>
-                <Input 
-                    name='xAxis' 
+                <Input
+                    name='xAxis'
                     value={xAxis}
                     inputFunction={setXAxis}
-                    >X axis labels:</Input>
-                <Input 
+                >X axis labels:</Input>
+                <Input
                     name='yAxis'
                     value={yAxis}
                     inputFunction={setYAxis}
-                    >Y axis values:</Input>
+                >Y axis values:</Input>
+                <Diagram labels={labels} data={data}/>
             </ChartWrap>
-            <Diagram></Diagram>
         </Container>
     )
 }
 
-https://react-chartjs-2.js.org/components/chart
